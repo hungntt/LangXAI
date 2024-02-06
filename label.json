@@ -1,0 +1,29 @@
+{
+  "clf_1": {
+    "task": "classification",
+    "xai": "gradcam",
+    "model": "swinv2-tiny",
+    "dataset": "imagenetv2",
+    "ground_truth": "sleeping bag",
+    "prediction": "sleeping bag",
+    "human_explanation": "The saliency map shows the sleeping bag as the most important region in the image as it is the most activated region in the image. While the background is not important for the model's prediction. This reflects that the model is focusing on the correct region to make the prediction."
+  },
+  "clf_2": {
+    "task": "classification",
+    "xai": "gradcamplusplus",
+    "model": "swinv2-small",
+    "dataset": "imagenetv2",
+    "ground_truth": "jacamar",
+    "prediction": "jacamar",
+    "human_explanation": "The heatmap shows the model’s focus areas in predicting the image. It pays most attention to the bird’s head, body, and tail, which are crucial for recognizing the jacamar. The surroundings, which are less focused, don’t influence this classification. The model’s prediction aligns with the actual jacamar in the image, confirming that its focus on the bird helps in accurate prediction."
+  },
+  "clf_3": {
+    "task": "classification",
+    "xai": "eigencam",
+    "model": "swinv2-tiny",
+    "dataset": "imagenetv2",
+    "ground_truth": "shopping bag",
+    "prediction": "purse",
+    "human_explanation": "The heatmap shows the model’s prediction of a purse in the image. It’s most confident about the sides and bottom of the object, but less so about the handle and upper middle part. However, the object is actually a shopping basket, not a purse, indicating a misalignment between the model’s focus and the true label. This suggests that the model may be focusing on the wrong areas for this image."
+  }
+}
