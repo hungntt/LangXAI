@@ -6,7 +6,7 @@ from utils import load_all_images_in_a_folder
 from config import IMAGENETV2_TEST_PATH
 
 
-def load_all_images_in_subfolders_in_a_folder(path=IMAGENETV2_TEST_PATH):
+def imagenetv2_images_loader(path=IMAGENETV2_TEST_PATH):
     images_and_labels = []
     for filename in os.listdir(path):
         # Get the label of the image based on filename

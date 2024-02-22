@@ -41,7 +41,9 @@ coco = ['__background__', 'person', 'bicycle', 'car', 'motorcycle', 'airplane', 
         'refrigerator',
         'N/A', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush']
 
+CLASSIFICATION_MODEL = ["SwinV2-Tiny", "SwinV2-Small", "SwinV2-Base", "SwinV2-Large", "ViT-B", "ViT-L"]
 CLASSIFICATION_XAI = ["GradCAM", "GradCAMPlusPlus", "EigenCAM", "EigenGradCAM", "HiResCAM"]
+SEGMENTATION_MODEL = ["ResNet50", "ResNet101"]
 SEGMENTATION_XAI = ["GradCAM", "GradCAMPlusPlus", "EigenCAM", "EigenGradCAM", "ScoreCAM", "HiResCAM", "AblationCAM",
                     "XGradCAM"]
 DETECTION_XAI = ["D-RISE", "D-CLOSE", "GCAME"]
@@ -49,5 +51,14 @@ DETECTION_XAI = ["D-RISE", "D-CLOSE", "GCAME"]
 MODEL_NAME = "gpt-4"
 OPENAI_API_KEY = "REPLACE_YOUR_API"
 
+TTPLA_IMAGE_PATH = "images/ttpla/images"
+TTPLA_LABEL_PATH = "images/ttpla/labels"
 IMAGENETV2_TEST_PATH = "images/imagenet/imagenetv2-matched-frequency-format-val"
 SERVER_PORT = 7860
+
+DESCRIPTION_TEMPLATE = """- End users are provided with the original input image and its "heatmap."
+- LangXAI considers the images to give comprehensible explanations divided into 4 parts:
+    + A general description of the "heatmap."
+    + Most concentrated (vivid) regions of the resulting "heatmap."
+    + Least concentrated (muted) regions of the resulting "heatmap."
+    + Level of accuracy between the model's prediction and the input."""

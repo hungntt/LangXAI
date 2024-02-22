@@ -115,7 +115,7 @@ def clf_run_xai(clf, img, label, xai):
     return explain_img
 
 
-def model_prediction(clf, img, top_k=3):
+def clf_pred(clf, img, top_k=3):
     # Load model
     model, img_tensor, img_pil, original_image = load_model(img, clf)
     logits = model(img_tensor.unsqueeze(0)).logits

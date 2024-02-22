@@ -55,14 +55,7 @@ def get_prediction(pred, threshold):
     return pred_boxes, pred_class, scores
 
 
-def det_run_xai(det_model, det_xai, img):
-    """
-    det_run_xai: Run XAI for detection task
-    :param det_model: Detection model
-    :param det_xai: XAI method for detection task
-    :param img: input image
-    :return: explanation map
-    """
+def det_pred(det_model, img):
     img_arr = np.array(img)
 
     rgb_img = np.float32(img_arr) / 255
@@ -78,6 +71,7 @@ def det_run_xai(det_model, det_xai, img):
         rs = get_prediction(prediction, 0.5)
 
         # Show prediction
+        global boxes, pred_cls, pred
         boxes, pred_cls, pred = rs
         fig, ax = plt.subplots()
         ax.imshow(rgb_img)
@@ -89,18 +83,40 @@ def det_run_xai(det_model, det_xai, img):
             ax.add_patch(rect)
             ax.text(x_min, y_min, coco[pred_cls[i]], style='italic',
                     bbox={'facecolor': all_colors[pred_cls[i]],
-                          'alpha': 0.5, })
+                          'alpha': 0.5})
 
         for i in range(len(boxes)):
             boxes[i].append(pred_cls[i])
             boxes[i].append(pred[i])
+        # Remove axis and padding and white space
+        ax.axis('off')
+        ax.set_ylim(org_h, 0)
+        ax.set_xlim(0, org_w)
+        plt.tight_layout()
 
         # Return the prediction image
         img_buf = io.BytesIO()
         plt.savefig(img_buf, format='png')
         img_buf.seek(0)
         prediction = Image.open(img_buf)
+    return prediction
 
+
+def det_run_xai(det_model, det_xai, img):
+    """
+    det_run_xai: Run XAI for detection task
+    :param det_model: Detection model
+    :param det_xai: XAI method for detection task
+    :param img: input image
+    :return: explanation map
+    """
+    img_arr = np.array(img)
+
+    rgb_img = np.float32(img_arr) / 255
+    if det_model == 'FasterRCNN':
+        transform = T.Compose([T.ToTensor()])
+        org_h, org_w, _ = rgb_img.shape
+        inp = transform(rgb_img)
         target_layer = [
             # 'backbone.fpn.inner_blocks.0.0',
             'backbone.fpn.layer_blocks.0.0',
@@ -119,11 +135,11 @@ def det_run_xai(det_model, det_xai, img):
         if det_xai == 'GCAME':
             cam = GCAME(model, target_layer)
             inp = inp.to('cpu')
-            start = timeit.default_timer()
+            # start = timeit.default_timer()
             out = cam(inp, [boxes[idx]], index=idx)
-            stop = timeit.default_timer()
+            # stop = timeit.default_timer()
 
-            print("Time: {}s".format(stop - start))
+            # print("Time: {}s".format(stop - start))
             box = boxes[idx]
             (x_min, y_min), (x_max, y_max), cls, score = box
             fig, ax = plt.subplots()
@@ -137,13 +153,14 @@ def det_run_xai(det_model, det_xai, img):
             ax.add_patch(rect)
             ax.text(x_min, y_min, coco[cls], style='italic', bbox={'facecolor': all_colors[cls], 'alpha': 0.5})
             ax.imshow(out, cmap='jet', alpha=0.5)
-            # No white space and remove axis
-            plt.subplots_adjust(top=1, bottom=0, right=1, left=0, hspace=0, wspace=0)
-            plt.margins(0, 0)
-            plt.axis('off')
+            # Remove axis and padding and white space
+            ax.axis('off')
+            ax.set_ylim(org_h, 0)
+            ax.set_xlim(0, org_w)
+            plt.tight_layout()
             # Return the fig as a PIL Image
             img_buf = io.BytesIO()
             plt.savefig(img_buf, format='png')
             img_buf.seek(0)
             explanation = Image.open(img_buf)
-        return prediction, explanation
+        return explanation, coco[cls]
