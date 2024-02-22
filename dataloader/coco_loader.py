@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 from pycocotools.coco import COCO
 import os
 
-dataDir = 'images'
+dataDir = 'images/coco'
 dataType = 'val2017'
 annFile = f'{dataDir}/annotations/instances_{dataType}.json'
 coco = COCO(annFile)
