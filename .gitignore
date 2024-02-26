@@ -3,4 +3,3 @@
 /model/segmentation/model_ResNet101.pth
 /model/segmentation/old_model.pth
 /model/segmentation/ResNet50_scripted.ptl
-/xai/
