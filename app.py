@@ -178,7 +178,7 @@ def main():
                               outputs=[det_xai_llm_output],
                               queue=True)
 
-        demo.launch(share=False, server_port=SERVER_PORT)
+        demo.launch(share=True, server_port=SERVER_PORT)
 
 
 if __name__ == "__main__":

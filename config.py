@@ -41,12 +41,11 @@ coco = ['__background__', 'person', 'bicycle', 'car', 'motorcycle', 'airplane', 
         'refrigerator',
         'N/A', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush']
 
-CLASSIFICATION_MODEL = ["SwinV2-Tiny", "SwinV2-Small", "SwinV2-Base", "SwinV2-Large", "ViT-B", "ViT-L"]
+CLASSIFICATION_MODEL = ["SwinV2-Tiny", "SwinV2-Small", "SwinV2-Base"]
 CLASSIFICATION_XAI = ["GradCAM", "GradCAMPlusPlus", "EigenCAM", "EigenGradCAM", "HiResCAM"]
 SEGMENTATION_MODEL = ["ResNet50", "ResNet101"]
-SEGMENTATION_XAI = ["GradCAM", "GradCAMPlusPlus", "EigenCAM", "EigenGradCAM", "ScoreCAM", "HiResCAM", "AblationCAM",
-                    "XGradCAM"]
-DETECTION_XAI = ["D-RISE", "D-CLOSE", "GCAME"]
+SEGMENTATION_XAI = ["GradCAM", "GradCAMPlusPlus", "EigenCAM", "EigenGradCAM", "HiResCAM", "XGradCAM"]
+DETECTION_XAI = ["GCAME"]
 
 MODEL_NAME = "gpt-4"
 OPENAI_API_KEY = "REPLACE_YOUR_API"
