@@ -46,8 +46,7 @@ class SegmentationModule:
         if model == 'ResNet101':
             self.model = deeplabv3_resnet101(pretrained=False, num_classes=len(self.sem_classes))
         elif model == 'ResNet50':
-            self.model = torch.hub.load('pytorch/vision:v0.11.0', 'deeplabv3_resnet50', pretrained=False,
-                                        num_classes=len(self.sem_classes))
+            self.model = deeplabv3_resnet50(pretrained=False, num_classes=len(self.sem_classes))
 
         PATH = f'model/segmentation/model_{model}.pth'
         if torch.cuda.is_available():
@@ -55,9 +54,6 @@ class SegmentationModule:
         else:
             self.model.load_state_dict(torch.load(PATH, map_location=torch.device('cpu')))
         self.model = self.model.eval()
-
-        scripted_module = torch.jit.script(self.model)
-        self.model = optimize_for_mobile(scripted_module)
 
         if torch.cuda.is_available():
             self.model = self.model.cuda()
