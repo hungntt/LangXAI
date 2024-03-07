@@ -96,8 +96,7 @@ class SegmentationModule:
         target_layers = [self.model.model.backbone.layer4]
         targets = [SemanticSegmentationTarget(self.category_idx, self.mask_float)]
 
-        with globals()[xai](model=self.model, target_layers=target_layers,
-                            use_cuda=torch.cuda.is_available()) as cam:
+        with globals()[xai](model=self.model, target_layers=target_layers) as cam:
             grayscale_cam = cam(input_tensor=self.input_tensor, targets=targets)[0, :]
             cam_image = show_cam_on_image(self.rgb_img, grayscale_cam, use_rgb=True)
         explanation = Image.fromarray(cam_image)
