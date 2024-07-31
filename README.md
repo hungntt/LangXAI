@@ -1,5 +1,5 @@
 # LangXAI: XAI Explanations in Human Language
-![overview.png](overview.png)
+![img.png](img.png)
 ## Installation
 - Install dependencies
 ```pip install -r requirements.txt```
