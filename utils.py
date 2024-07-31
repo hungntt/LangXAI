@@ -28,3 +28,10 @@ def check_devices_torch():
         return 'cuda:0'
     else:
         return 'cpu'
+
+
+def extract_index_from_object_detection_output(output: gr.SelectData):
+    """
+    Extract number 0 from "person_0" for example
+    """
+    return output.index

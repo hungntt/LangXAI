@@ -14,7 +14,7 @@ from model.segmentation.segmentation_output_wrapper import SegmentationModelOutp
 from model.segmentation.semantic_segmentation_target import SemanticSegmentationTarget
 
 
-def seg_run_pred(seg_model, category, image):
+def seg_run_pred(seg_model, category):
     segmentation_image = seg_model.predict(category=category)
     return segmentation_image
 
@@ -45,10 +45,14 @@ class SegmentationModule:
 
         if model == 'ResNet101':
             self.model = deeplabv3_resnet101(pretrained=False, num_classes=len(self.sem_classes))
+            PATH = f'model/segmentation/model_{model}.pth'
         elif model == 'ResNet50':
             self.model = deeplabv3_resnet50(pretrained=False, num_classes=len(self.sem_classes))
+            PATH = f'model/segmentation/model_{model}.pth'
+        elif model == 'ResNet101-700':
+            self.model = deeplabv3_resnet101(pretrained=False, num_classes=len(self.sem_classes))
+            PATH = f'/Users/thanhhung/Projects/vqi/model/segmentation/model700700.pth'
 
-        PATH = f'model/segmentation/model_{model}.pth'
         if torch.cuda.is_available():
             self.model.load_state_dict(torch.load(PATH))
         else:
@@ -96,7 +100,8 @@ class SegmentationModule:
         target_layers = [self.model.model.backbone.layer4]
         targets = [SemanticSegmentationTarget(self.category_idx, self.mask_float)]
 
-        with globals()[xai](model=self.model, target_layers=target_layers) as cam:
+        with globals()[xai](model=self.model, target_layers=target_layers,
+                            use_cuda=torch.cuda.is_available()) as cam:
             grayscale_cam = cam(input_tensor=self.input_tensor, targets=targets)[0, :]
             cam_image = show_cam_on_image(self.rgb_img, grayscale_cam, use_rgb=True)
         explanation = Image.fromarray(cam_image)
@@ -114,15 +119,15 @@ class SegmentationModule:
             if shape['label'] == cat:
                 points = [(p[0], p[1]) for p in shape['points']]
                 try:
-                    draw.polygon(points, fill=tuple(shape['fill_color']), outline=tuple(shape['line_color']))
+                    draw.polygon(points, fill=(0, 255, 0, 120))
                 except TypeError:
                     # fill red color if no fill color is specified
-                    draw.polygon(points, fill=(255, 0, 0, 255), outline=(0, 255, 0, 255))
+                    draw.polygon(points, fill=(0, 255, 0, 120))
                 # Add the label name to the annotation
                 try:
-                    draw.text(points[0], shape['label'], fill=tuple(shape['fill_color']), align='center')
+                    draw.text(points[0], shape['label'], fill=(0, 255, 0, 120), align='center')
                 except TypeError:
-                    draw.text(points[0], shape['label'], fill=(255, 0, 0, 255), align='center')
+                    draw.text(points[0], shape['label'], fill=(0, 255, 0, 120), align='center')
 
         # Combine the image and the segmentation mask
         result = Image.alpha_composite(self.image.convert('RGBA'), mask)

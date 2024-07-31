@@ -68,43 +68,53 @@ def det_pred(det_model, img):
         model.to(torch_device)
         inp = transform(rgb_img)
         prediction = model([inp.to(torch_device)])
-        rs = get_prediction(prediction, 0.5)
-
-        # Show prediction
         global boxes, pred_cls, pred
-        boxes, pred_cls, pred = rs
-        fig, ax = plt.subplots()
-        ax.imshow(rgb_img)
-        for i in range(len(boxes)):
-            x_min, y_min = boxes[i][0]
-            x_max, y_max = boxes[i][1]
-            rect = patches.Rectangle((x_min, y_min), x_max - x_min, y_max - y_min, linewidth=1,
-                                     edgecolor=all_colors[pred_cls[i]], facecolor='none')
-            ax.add_patch(rect)
-            ax.text(x_min, y_min, coco[pred_cls[i]], style='italic',
-                    bbox={'facecolor': all_colors[pred_cls[i]],
-                          'alpha': 0.5})
+        sections = []
+        boxes, pred_cls, pred = get_prediction(prediction, 0.5)
+        for ite, (box, pred_cl) in enumerate(zip(boxes, pred_cls)):
+            box_tuple = tuple([int(coor) for coorlist in box for coor in coorlist])
+            sections.append((box_tuple, f"{coco[pred_cl]}_{ite}"))
 
+        # # Show prediction
+        # global boxes, pred_cls, pred
+        # boxes, pred_cls, pred = rs
+        # fig, ax = plt.subplots()
+        # ax.imshow(rgb_img)
+        # for i in range(len(boxes)):
+        #     x_min, y_min = boxes[i][0]
+        #     x_max, y_max = boxes[i][1]
+        #     rect = patches.Rectangle((x_min, y_min),
+        #                              x_max - x_min,
+        #                              y_max - y_min, linewidth=1,
+        #                              edgecolor=all_colors[pred_cls[i]], facecolor='none')
+        #     ax.add_patch(rect)
+        #     ax.text(x_min, y_min, coco[pred_cls[i]], style='italic',
+        #             bbox={'facecolor': all_colors[pred_cls[i]],
+        #                   'alpha': 0.5})
+        #
         for i in range(len(boxes)):
             boxes[i].append(pred_cls[i])
             boxes[i].append(pred[i])
-        # Remove axis and padding and white space
-        ax.axis('off')
-        ax.set_ylim(org_h, 0)
-        ax.set_xlim(0, org_w)
-        plt.tight_layout()
+        # # Remove axis and padding and white space
+        # ax.axis('off')
+        # ax.set_ylim(org_h, 0)
+        # ax.set_xlim(0, org_w)
+        # plt.tight_layout()
+        #
+        # # Return the prediction image
+        # img_buf = io.BytesIO()
+        # plt.savefig(img_buf, format='png')
+        # img_buf.seek(0)
+        # prediction = Image.open(img_buf)
 
-        # Return the prediction image
-        img_buf = io.BytesIO()
-        plt.savefig(img_buf, format='png')
-        img_buf.seek(0)
-        prediction = Image.open(img_buf)
-    return prediction
+        results = (img_arr, sections)
+    return results
 
 
-def det_run_xai(det_model, det_xai, img):
+def det_run_xai(det_model, det_xai, img, idx: int):
     """
     det_run_xai: Run XAI for detection task
+    :param idx:
     :param det_model: Detection model
     :param det_xai: XAI method for detection task
     :param img: input image
@@ -131,7 +141,8 @@ def det_run_xai(det_model, det_xai, img):
             'backbone.fpn.layer_blocks.3.0',
         ]
 
-        idx = 0
+        idx = int(idx)
+
         if det_xai == 'GCAME':
             cam = GCAME(model, target_layer)
             inp = inp.to('cpu')
