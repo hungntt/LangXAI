@@ -1,4 +1,7 @@
-# LangXAI: XAI Explanations in Human Language
+# LangXAI: Integrating Large Vision Models for Generating Textual Explanations to Enhance Explainability in Visual Perception Tasks
+
+This repository contains the source code for the "LangXAI: Integrating Large Vision Models for Generating Textual Explanations to Enhance Explainability in Visual Perception Tasks" paper, which is published at IJCAI 2024.
+
 ![img.png](img.png)
 ## Installation
 - Install dependencies
