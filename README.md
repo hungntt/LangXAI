@@ -1,6 +1,6 @@
 # LangXAI: Integrating Large Vision Models for Generating Textual Explanations to Enhance Explainability in Visual Perception Tasks
 
-This repository contains the source code for the "LangXAI: Integrating Large Vision Models for Generating Textual Explanations to Enhance Explainability in Visual Perception Tasks" paper, which is published at IJCAI 2024.
+This repository contains the source code for the ["LangXAI: Integrating Large Vision Models for Generating Textual Explanations to Enhance Explainability in Visual Perception Tasks" paper, which is published at IJCAI 2024 Demo Track.](https://www.ijcai.org/proceedings/2024/1025)
 
 ![img.png](img.png)
 ## Installation
@@ -26,10 +26,18 @@ This repository contains the source code for the "LangXAI: Integrating Large Vis
 ## BibTeX
 - If you find our work useful, I would be grateful if you cite our paper:
 ```
-@article{nguyen2024langxai,
-  title={LangXAI: Integrating Large Vision Models for Generating Textual Explanations to Enhance Explainability in Visual Perception Tasks},
-  author={Nguyen, Truong Thanh Hung and Clement, Tobias and Nguyen, Phuc Truong Loc and Kemmerzell, Nils and Truong, Van Binh and Nguyen, Vo Thanh Khang and Abdelaal, Mohamed and Cao, Hung},
-  journal={arXiv preprint arXiv:2402.12525},
-  year={2024}
+@inproceedings{ijcai2024p1025,
+  title     = {LangXAI: Integrating Large Vision Models for Generating Textual Explanations to Enhance Explainability in Visual Perception Tasks},
+  author    = {Nguyen, Hung and Clement, Tobias and Nguyen, Loc and Kemmerzell, Nils and Truong, Binh and Nguyen, Khang and Abdelaal, Mohamed and Cao, Hung},
+  booktitle = {Proceedings of the Thirty-Third International Joint Conference on
+               Artificial Intelligence, {IJCAI-24}},
+  publisher = {International Joint Conferences on Artificial Intelligence Organization},
+  editor    = {Kate Larson},
+  pages     = {8754--8758},
+  year      = {2024},
+  month     = {8},
+  note      = {Demo Track},
+  doi       = {10.24963/ijcai.2024/1025},
+  url       = {https://doi.org/10.24963/ijcai.2024/1025},
 }
 ```
